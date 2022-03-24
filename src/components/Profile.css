@@ -1,0 +1,15 @@
+.Profile {
+    height: 100%;
+    background-color: #282c34;
+}
+
+.Profile-content {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+}
+
+.Profile-tracks {
+    margin-top: 17px;
+    float: right;
+}

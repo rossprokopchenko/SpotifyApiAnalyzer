@@ -1,0 +1,66 @@
+.AlbumShop-Grid {
+    position: absolute;
+    top: 400px;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 1160px;
+    min-height: 630px;
+    height: 70%;
+}
+
+.AlbumShop-col1 {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100%;
+}
+
+
+.AlbumShop-col2 {
+    float: right;
+    display: flex;
+    width: calc( 100% - 250px );
+    height: 100%;
+    flex-direction: column;
+}
+
+.AlbumShop-col2-row1 {
+    float: right;
+    display: flex;
+    width: 100%;
+    height: 60px;
+    flex-direction: row;
+}
+
+.AlbumShop-col2-row2 {
+    float: right;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    overflow-y: auto;
+  
+}
+
+.AlbumShop-cards {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+
+.AlbumShop-col2-row2::-webkit-scrollbar {
+    width: 16px;
+}
+
+.AlbumShop-col2-row2::-webkit-scrollbar-track {
+}
+
+.AlbumShop-col2-row2::-webkit-scrollbar-thumb {
+    background-color: #212529;
+    border-radius: 7px;
+    border: 1px solid #404040;
+}

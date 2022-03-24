@@ -1,0 +1,10 @@
+.navbar-left {
+    display:flex;
+    flex-direction:row;
+    margin-left: 20px;
+}
+
+.navbar-right {
+    position: absolute;
+    right: 10px;
+}
