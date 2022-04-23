@@ -5,6 +5,13 @@
 }
 
 .navbar-right {
+    display:flex;
+    flex-direction: row;
     position: absolute;
     right: 10px;
+}
+
+.navbar-logout {
+    display:flex;
+    flex-direction: row;
 }

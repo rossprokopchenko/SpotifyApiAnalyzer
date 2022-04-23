@@ -4,15 +4,6 @@
     color: lightgray;
 }
 
-.App-header {
-
-}
-
 .App-body {
-    
-}
-
-
-.modal-open {
-    
+    height: calc(100vh - 60px);
 }

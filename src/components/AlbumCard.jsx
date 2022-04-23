@@ -30,31 +30,92 @@ function AlbumCard(props) {
                         backgroundColor: '#282c00',
                         width: '132px',
                         height: '180px',
-                        marginLeft: '',
-                        marginTop: '10px'
+                        marginTop: '10px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
                     },
 
                     "& > :hover": {
                         backgroundColor: '#282c60'
                     }
                 }
-                break;
             default:
                 return {
                     '& > :not(style)': {
                         backgroundColor: '#282c40',
                         width: '132px',
                         height: '180px',
-                        marginLeft: '',
                         marginTop: '10px',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
                     },
 
                     "& > :hover": {
                         backgroundColor: '#282c60'
                     }
                 }
-                break;
+        }
+    }
+
+    function albumInfoBox() {
+        switch(using) {
+            case 'recommended':
+                return (
+                    <Box sx={style}>
+                        <Avatar
+                            src={album.images[0].url}
+                            sx={{
+                                height: '128px',
+                                width: '128px',
+                                display: 'flex',
+                                marginLeft: 'auto',
+                                marginRight: 'auto'
+                            }}
+                            alt={album.artists[0].name}
+                            variant="rounded"
+                        />
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: 'lightgray' }}>
+                            {album.name}
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
+                            Artist: {album.artists.map(artist => artist.name + " ")} <br />
+                            Tracks: {album.total_tracks} <br />
+                            Release Date: {album.release_date}
+                        </Typography>
+                        <Button sx={{ mt: 1 }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
+                            Open in Spotify</Button>
+                        
+                    </Box>
+                );
+            default:
+                return(
+                    <Box sx={style}>
+                        <Avatar
+                            src={album.images[0].url}
+                            sx={{
+                                height: '128px',
+                                width: '128px',
+                                display: 'flex',
+                                marginLeft: 'auto',
+                                marginRight: 'auto'
+                            }}
+                            alt={album.artists[0].name}
+                            variant="rounded"
+                        />
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mt: 1, color: 'lightgray', fontWeight: 'bold'}}>
+                            {album.name}
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
+                            Artist: {album.artists.map(artist => artist.name + " ")} <br />
+                            Label: {album.label} <br />
+                            Tracks: {album.total_tracks} <br />
+                            Popularity: {album.popularity} <br />
+                            Release Date: {album.release_date}
+                        </Typography>
+                        <Button sx={{ mt: 1 }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
+                            Open in Spotify</Button>
+                    </Box>
+                );
         }
     }
 
@@ -79,12 +140,11 @@ function AlbumCard(props) {
                         />
                         <Typography
                             variant="body1"
-                            sx={{ fontSize: '13px', fontWeight: 'bold', color: 'lightgray', padding: '2px' }}
+                            sx={{ fontSize: '13px', fontWeight: 'bold', color: 'lightgray', margin: '2px'}}
                         >
                             {album.name}
                         </Typography>
                     </Paper>
-
                 </Box>
             </IconButton>
 
@@ -99,32 +159,7 @@ function AlbumCard(props) {
                     timeout: 500,
                 }}
             >
-                <Box sx={style}>
-                    <Avatar
-                        src={album.images[0].url}
-                        sx={{
-                            height: '128px',
-                            width: '128px',
-                            display: 'flex',
-                            marginLeft: 'auto',
-                            marginRight: 'auto'
-                        }}
-                        alt={album.artists[0].name}
-                        variant="rounded"
-                    />
-                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: 'lightgray' }}>
-                        {album.name}
-                        
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
-                        Artist: {album.artists.map(artist => artist.name + " ")} <br />
-                        Tracks: {album.total_tracks} <br />
-                        Release Date: {album.release_date}
-                    </Typography>
-                    <Button sx={{ mt: 1 }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
-                        Open in Spotify</Button>
-                    
-                </Box>
+            {albumInfoBox()}
             </Modal>
         </div>
     );

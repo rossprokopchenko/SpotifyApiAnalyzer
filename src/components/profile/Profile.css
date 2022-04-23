@@ -1,0 +1,14 @@
+.Profile {
+    height: 100vh;
+}
+
+.Profile-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.Profile-content-2 {
+    display: flex;
+    flex-direction: row;
+}

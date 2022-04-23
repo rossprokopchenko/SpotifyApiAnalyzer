@@ -1,12 +1,14 @@
 import * as React from 'react';
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Profile from './components/Profile';
+import NavBar from './components/navbar/NavBar';
+import Home from './components/home/Home';
+import Profile from './components/profile/Profile';
+import LoginPage from './components/LoginPage';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import './App.css';
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useNavigate, Route, Routes } from "react-router-dom";
 
 function App() {
     const [token, setToken] = useState("");
@@ -29,17 +31,32 @@ function App() {
     const [savedAlbums, setSavedAlbums] = useState([]);
     const [savedAlbumsIds, setSavedAlbumsIds] = useState([]);
     const [profile, setProfile] = useState("");
+    const [currentTrack, setCurrentTrack] = useState("");
     const [recommendedAlbums, setRecommendedAlbums] = useState([]);
+    const [recommendedTracks, setRecommendedTracks] = useState([]);
+    const [availableGenres, setAvailableGenres] = useState([]);
+    const [timer, setTimer] = useState();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const hash = window.location.hash;
         let token = window.localStorage.getItem("token");
+        
+        setTimer(parseInt(window.localStorage.getItem("expiresIn")));
 
         if (!token && hash) {
+            let now = new Date();
+
+            let expiresInSeconds = hash.substring(1).split("&").find(elem => elem.startsWith("expires_in")).split("=")[1];
+            let expiresInDate = dayjs(now).add(expiresInSeconds, 'seconds').toDate();
+            setTimer(expiresInDate.getTime());
+
             token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1];
 
             window.location.hash = "";
             window.localStorage.setItem("token", token);
+            window.localStorage.setItem("expiresIn", expiresInDate.getTime());
         }
 
         axios.defaults.baseURL = SPOTIFY_API;
@@ -53,24 +70,33 @@ function App() {
         getProfile();
         getArtists(DEFAULT_TIME_RANGE);
         getTracks(DEFAULT_TIME_RANGE);
-
         // limits in seeds must all add up to 5 or less
         getAlbumRecommendations();
         getRecentTracks(10);
-
+        getCurrentlyPlaying();
+        getGenreSeeds();
     }, []);
+
+    const getGenreSeeds = () => {
+        axios.get('/recommendations/available-genre-seeds').then(response => {
+            setAvailableGenres(response.data.genres);
+        });
+    }
 
     const getProfile = async (timeRange) => {
         axios.get('/me').then(response => {
             setProfile(response.data);
         });
+    }
 
+    const login = () => {
+        window.location.replace(AUTH_ENDPOINT+'?client_id='+CLIENT_ID+'&redirect_uri='+REDIRECT_URI+'&response_type='+RESPONSE_TYPE+'&scope='+SCOPE);
     }
 
     const logout = () => {
         setToken("");
         window.localStorage.removeItem("token");
-        window.location.reload();
+        navigate("/login");
     }
 
     const getArtists = async (timeRange) => {
@@ -110,6 +136,13 @@ function App() {
         })
     }
 
+    const getCurrentlyPlaying = async () => {
+        axios.get('/me/player/currently-playing').then(response => {
+            
+            setCurrentTrack(response.data.item);
+        })
+    }
+
     const getSavedAlbums = async (limit) => {
         axios.get('/me/albums', {
             params: {
@@ -126,6 +159,35 @@ function App() {
             setSavedAlbums(albumList);
             setSavedAlbumsIds(albumListIds);
         })
+    }
+
+    const getTrackInfo = async (id) => {
+        return await axios.get('/audio-features/' + id);
+    }
+
+    const getTrackRecommendations = async (genresString, popularity, energy, speech, duration, limit, sort) => {
+        axios.get('/recommendations', {
+            params: {
+                seed_genres: genresString,
+                min_popularity: popularity[0],
+                max_popularity: popularity[1],
+                min_energy: energy[0],
+                max_energy: energy[1],
+                min_speechiness: speech[0],
+                max_speechiness: speech[1],
+                min_duration: duration[0],
+                max_duration: duration[1],
+                limit: limit
+            }
+        }).then(res => {
+            let tracks = res.data.tracks;
+
+            if(sort) {
+                tracks.sort((a,b) => b.popularity - a.popularity);
+            } 
+            
+            setRecommendedTracks(tracks);
+        });
     }
 
     const getAlbumRecommendations = async () => {
@@ -215,7 +277,7 @@ function App() {
                                 albumList.push(track.album);
                             }
                         }
-
+                        setRecommendedTracks(res3.data.tracks);
                         setRecommendedAlbums(albumList);
                     })
                 })
@@ -224,28 +286,60 @@ function App() {
     }
 
     return (
-        <Router>
-            <div className="App">
-                <div className="App-header">
-                    <NavBar
-                        token={token}
-                        CLIENT_ID={CLIENT_ID}
-                        REDIRECT_URI={REDIRECT_URI}
-                        AUTH_ENDPOINT={AUTH_ENDPOINT}
-                        RESPONSE_TYPE={RESPONSE_TYPE}
-                        SCOPE={SCOPE}
-                        logout={logout}
-                    />
-                </div>
-                <div className="App-body">
-                    <Routes>
-                        <Route path="/" element={<Home savedAlbums={savedAlbums} savedAlbumsIds={savedAlbumsIds} recommendedAlbums={recommendedAlbums} />} />
-                        <Route path="/home" element={<Home savedAlbums={savedAlbums} savedAlbumsIds={savedAlbumsIds} recommendedAlbums={recommendedAlbums} />} />
-                        <Route path="/profile" element={<Profile profile={profile} artists={artists} tracks={tracks} recentTracks={recentTracks} getArtists={getArtists} getTracks={getTracks} />} />
-                    </Routes>
-                </div>
+        <div className="App">
+            <div className="App-header">
+                <NavBar
+                    token={token}
+                    CLIENT_ID={CLIENT_ID}
+                    REDIRECT_URI={REDIRECT_URI}
+                    AUTH_ENDPOINT={AUTH_ENDPOINT}
+                    RESPONSE_TYPE={RESPONSE_TYPE}
+                    SCOPE={SCOPE}
+                    login={login}
+                    logout={logout}
+                    timer={timer}
+                    profile={profile}
+                />
             </div>
-        </Router>
+            <div className="App-body">
+                <Routes>
+                    {window.localStorage.getItem("token") ? 
+                    <Route path="/" element={<Home 
+                        savedAlbums={savedAlbums} 
+                        savedAlbumsIds={savedAlbumsIds} 
+                        recommendedAlbums={recommendedAlbums} 
+                        recommendedTracks={recommendedTracks} 
+                        getTrackRecommendations={getTrackRecommendations} 
+                        availableGenres={availableGenres} 
+                        getTrackInfo={getTrackInfo}
+                        />} />
+                    : <Route path="/" element={<LoginPage login={login}/>} />}
+
+                    <Route path="/home" element={<Home 
+                        savedAlbums={savedAlbums} 
+                        savedAlbumsIds={savedAlbumsIds} 
+                        recommendedAlbums={recommendedAlbums} 
+                        recommendedTracks={recommendedTracks} 
+                        getTrackRecommendations={getTrackRecommendations}
+                        availableGenres={availableGenres} 
+                        getTrackInfo={getTrackInfo}
+                        />} />
+
+                    <Route path="/profile" element={<Profile 
+                        profile={profile} 
+                        artists={artists} 
+                        tracks={tracks} 
+                        recentTracks={recentTracks} 
+                        getArtists={getArtists} 
+                        getTracks={getTracks} 
+                        currentTrack={currentTrack}
+                        getTrackInfo={getTrackInfo}
+                        />} />
+
+                    <Route path="/login" element={<LoginPage login={login}/>} />
+                </Routes>
+            </div>
+        </div>
     );
 
 }
