@@ -1,9 +1,8 @@
 .AlbumShop-Grid {
     position: absolute;
-    top: 450px;
+    top: 60px;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0);
     width: 1160px;
     min-height: 630px;
     height: 80%;
@@ -51,9 +50,6 @@
 
 .AlbumShop-col2-row2::-webkit-scrollbar {
     width: 16px;
-}
-
-.AlbumShop-col2-row2::-webkit-scrollbar-track {
 }
 
 .AlbumShop-col2-row2::-webkit-scrollbar-thumb {

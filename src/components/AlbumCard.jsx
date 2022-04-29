@@ -2,6 +2,7 @@ import * as React from 'react';
 import './AlbumCard.css';
 import PropTypes from 'prop-types';
 import { Avatar, Box, Paper, Typography, IconButton, Modal, Button, Backdrop } from '@mui/material';
+import {ReactComponent as SpotifyLogo} from '../resources/spotify-logo.svg';
 
 function AlbumCard(props) {
     const { savedAlbumsIds, using, album } = props;
@@ -82,7 +83,7 @@ function AlbumCard(props) {
                             Tracks: {album.total_tracks} <br />
                             Release Date: {album.release_date}
                         </Typography>
-                        <Button sx={{ mt: 1 }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
+                        <Button sx={{ mt: 1, height: '35px' }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank" endIcon={<SpotifyLogo transform="scale(0.5)"/>}>
                             Open in Spotify</Button>
                         
                     </Box>
@@ -112,7 +113,7 @@ function AlbumCard(props) {
                             Popularity: {album.popularity} <br />
                             Release Date: {album.release_date}
                         </Typography>
-                        <Button sx={{ mt: 1 }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
+                        <Button sx={{ mt: 1, height: '35px'}} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank" endIcon={<SpotifyLogo transform="scale(0.5)"/>}>
                             Open in Spotify</Button>
                     </Box>
                 );
