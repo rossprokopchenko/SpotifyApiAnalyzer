@@ -76,7 +76,7 @@ function AlbumShop(props) {
                     </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton selected={selectedIndex === 2} component="a" onClick={handleTracks}>
-                            <ListItemText primary="Tracks Generator" />
+                            <ListItemText primary="Track Generator" />
                         </ListItemButton>
                     </ListItem>
                 </List>
