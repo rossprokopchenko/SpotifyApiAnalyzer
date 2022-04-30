@@ -1,5 +1,7 @@
 import React from 'react';
-import { Avatar, Box, Paper, Typography, IconButton, Modal, Backdrop, Button } from '@mui/material';
+import { Avatar, Box, Paper, Typography, IconButton, Modal, Backdrop, Button, Accordion, AccordionSummary, AccordionDetails, Toolbar, Tooltip, Link } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HelpIcon from '@mui/icons-material/Help';
 import { useEffect, useState } from 'react';
 import explicit from '../resources/explicit.png';
 
@@ -45,6 +47,21 @@ function TrackCard(props) {
         boxShadow: 24,
         p: 4,
     };
+
+    const artistString = (artists) => {
+        let artistString = "";
+
+        for (let i = 0; i < artists.length; i++) {
+            let separator = i !== artists.length-1 ? ", " : "";
+            artistString += artists[i].name + separator;
+        }
+
+        return artistString;
+    }
+
+    const percentage = (num) => {
+        return num.toFixed(1) + "%";
+    }
 
     return (
         <div>
@@ -132,36 +149,49 @@ function TrackCard(props) {
                         alt={track.album.artists[0].name}
                         variant="rounded"
                     />
-                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <div style={{marginTop: '10px', display: 'flex', flexDirection: 'row'}}>
                         {track.explicit ? <Avatar sx={{height: '20px', width: '20px', mr: 1}} src={explicit} variant="rounded" /> : ""}
                         <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: 'lightgray' }}>
                             {track.name}
                         </Typography>
                     </div>
                     <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
-                        Artist: {track.artists.map(artist => artist.name + " ")} <br />
+                        Artist: {artistString(track.artists)} <br />
                         Album: {track.album.name} <br />
                         Release Date: {track.album.release_date} <br />
                         Duration: {handleDurationLabelFormal(track.duration_ms)} <br />
                         Popularity: {track.popularity} <br />
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 1, color: 'lightgray', fontWeight: 'bold'}}>
-                        Audio Features
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
-                        Acousticness: {trackInfo.acousticness} <br />
-                        Danceability: {trackInfo.danceability} <br />
-                        Energy: {trackInfo.energy} <br />
-                        Instrumentalness: {trackInfo.instrumentalness} <br />
-                        Key: {trackInfo.key} <br />
-                        Liveness: {trackInfo.liveness} <br />
-                        Loudness: {trackInfo.loudness} <br />
-                        {/*Mode: {trackInfo.mode} <br />*/}
-                        Speechiness: {trackInfo.speechiness} <br />
-                        Tempo: {trackInfo.tempo} <br />
-                        {/*Time Signature: {trackInfo.time_signature} <br />*/}
-                    </Typography>
-                    <Button sx={{ mt: 1 }} color="success" variant="outlined" href={track.external_urls.spotify} target="_blank">
+                    <Accordion square={false} sx={{mt: '10px', backgroundColor: '#171717'}}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon stroke='white'/>}>
+                            <Typography id="modal-modal-description" sx={{ color: 'lightgray', fontWeight: 'bold'}}>
+                                Audio Features
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
+                                
+                                <b>Danceability:</b> {percentage(trackInfo.danceability * 100)} <br />
+                                <b>Energy:</b> {percentage(trackInfo.energy * 100)} <br />
+                                <b>Valence:</b> {percentage(trackInfo.valence * 100)} <br />
+                                <b>Acousticness:</b> {percentage(trackInfo.acousticness * 100)} <br />
+                                <b>Tempo:</b> {Math.round(trackInfo.tempo)} BPM <br />
+                                Instrumentalness: {percentage(trackInfo.instrumentalness * 100)} <br />
+                                Liveness: {percentage(trackInfo.liveness * 100)} <br />
+                                Loudness: {Math.round(trackInfo.loudness)} dB <br />
+                                {/*Mode: {trackInfo.mode} <br />*/}
+                                Speechiness: {percentage(trackInfo.speechiness * 100)} <br />
+                                {/*Time Signature: {trackInfo.time_signature} <br />*/}
+                            </Typography>
+                            
+                                <Link href="https://medium.com/@boplantinga/what-do-spotifys-audio-features-tell-us-about-this-year-s-eurovision-song-contest-66ad188e112a#:~:text=Values%20typical%20range%20between%20-60,to%201.0%20the%20attribute%20value." target="_blank">
+                                <Tooltip title="Features Description"><HelpIcon color='info' sx={{mb: '10px', float: 'right'}}/></Tooltip>
+                                </Link>
+                                
+                            
+                        </AccordionDetails>
+                    </Accordion>
+                    <Button sx={{ mt: "10px" }} color="success" variant="outlined" href={track.external_urls.spotify} target="_blank">
                             Open in Spotify</Button>
                 </Box>
             </Modal>

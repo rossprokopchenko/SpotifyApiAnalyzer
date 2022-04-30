@@ -75,7 +75,7 @@ function AlbumCard(props) {
                             alt={album.artists[0].name}
                             variant="rounded"
                         />
-                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: 'lightgray' }}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ mt: 1, color: 'lightgray' }}>
                             {album.name}
                         </Typography>
                         <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
@@ -83,7 +83,7 @@ function AlbumCard(props) {
                             Tracks: {album.total_tracks} <br />
                             Release Date: {album.release_date}
                         </Typography>
-                        <Button sx={{ mt: 1, height: '35px' }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank" endIcon={<SpotifyLogo transform="scale(0.5)"/>}>
+                        <Button sx={{ mt: 1, height: '35px' }} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
                             Open in Spotify</Button>
                         
                     </Box>
@@ -113,7 +113,7 @@ function AlbumCard(props) {
                             Popularity: {album.popularity} <br />
                             Release Date: {album.release_date}
                         </Typography>
-                        <Button sx={{ mt: 1, height: '35px'}} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank" endIcon={<SpotifyLogo transform="scale(0.5)"/>}>
+                        <Button sx={{ mt: 1, height: '35px'}} color="success" variant="outlined" href={album.external_urls.spotify} target="_blank">
                             Open in Spotify</Button>
                     </Box>
                 );
