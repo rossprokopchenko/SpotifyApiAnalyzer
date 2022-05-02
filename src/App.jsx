@@ -14,8 +14,8 @@ function App() {
     const [token, setToken] = useState("");
 
     const CLIENT_ID = "ce1dff647ef6413ebee5c2e68552730b";
-    // "https://jade-centaur-bfff2c.netlify.app" "http://localhost:3000"
-    const REDIRECT_URI = "https://jade-centaur-bfff2c.netlify.app";
+    // "http://www.spotilyzer.com" "https://jade-centaur-bfff2c.netlify.app" "http://localhost:3000"
+    const REDIRECT_URI = "http://www.spotilyzer.com";
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
     const SPOTIFY_API = "https://api.spotify.com/v1";
     const DEFAULT_TIME_RANGE = "medium_term";
