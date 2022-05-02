@@ -1,13 +1,11 @@
-﻿import * as React from 'react';
-import Container from 'react-bootstrap/Container';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
+import React from 'react';
+import { Navbar, Nav } from 'react-bootstrap';
+import { Button, Avatar } from '@mui/material';
 import ExpiresTimer from './ExpiresTimer';
 import './NavBar.css';
 
 function NavBar(props) {
-    const { token, AUTH_ENDPOINT, CLIENT_ID, REDIRECT_URI, RESPONSE_TYPE, SCOPE, login, logout, loggedIn, timer, profile } = props;
+    const { token, logout, timer, profile } = props;
 
     return (
         <Navbar bg="dark" variant="dark" >
@@ -16,6 +14,8 @@ function NavBar(props) {
                 <Nav className="">
                     <Nav.Link href="home" to="/home">Home</Nav.Link>
                     <Nav.Link href="profile" to="/profile">Profile</Nav.Link>
+                    {/*<Nav.Link href="help" to="/help">Help</Nav.Link>
+                    <Nav.Link href="about" to="/about">About</Nav.Link>*/}
                 </Nav>
             </div>
             <div className="navbar-right">

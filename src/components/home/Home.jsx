@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import AlbumShop from './AlbumShop';
 import './Home.css';
+import Box from '@mui/material/Box';
 
 function Home(props) {
     const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getTrackRecommendations, availableGenres, getTrackInfo } = props;
@@ -10,9 +11,9 @@ function Home(props) {
     },[]);
 
     return (
-        <div>
+        <Box>
             <AlbumShop savedAlbums={savedAlbums} savedAlbumsIds={savedAlbumsIds} recommendedAlbums={recommendedAlbums} recommendedTracks={recommendedTracks} getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres} getTrackInfo={getTrackInfo} />
-        </div>
+        </Box>
     );
     
 }

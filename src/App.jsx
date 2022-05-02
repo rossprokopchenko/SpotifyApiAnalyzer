@@ -1,13 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import NavBar from './components/navbar/NavBar';
 import Home from './components/home/Home';
 import Profile from './components/profile/Profile';
 import LoginPage from './components/LoginPage';
+import Footer from './components/footer/Footer';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-import './App.css';
-
+import Box from '@mui/material/Box';
 import { useNavigate, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
     const SPOTIFY_API = "https://api.spotify.com/v1";
     const DEFAULT_TIME_RANGE = "medium_term";
     const RESPONSE_TYPE = "token";
-    const SCOPE = "user-read-currently-playing user-top-read user-read-recently-played";
+    const SCOPE = "user-read-currently-playing user-top-read user-read-recently-played user-library-read";
 
     const [artists, setArtists] = useState([]);
     const [tracks, setTracks] = useState([]);
@@ -68,11 +68,12 @@ function App() {
         getProfile();
         getArtists(DEFAULT_TIME_RANGE);
         getTracks(DEFAULT_TIME_RANGE);
-        // limits in seeds must all add up to 5 or less
-        getAlbumRecommendations();
         getRecentTracks(10);
         getCurrentlyPlaying();
         getGenreSeeds();
+        getAlbumRecommendations();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getGenreSeeds = () => {
@@ -163,11 +164,12 @@ function App() {
         return await axios.get('/audio-features/' + id);
     }
 
+    /*
     const getTracksInfo = async (tracks) => {
         let idString = "";
 
         for(let i = 0; i < tracks.length; i++) {
-            let separator = i != tracks.length-1 ? "," : "";
+            let separator = i !== tracks.length-1 ? "," : "";
             idString += tracks[i].id + separator;
         }
 
@@ -176,7 +178,7 @@ function App() {
                 ids: idString
             }
         })
-    }
+    }*/
 
     const getTrackRecommendations = async (genresString, energy, valence, danceability, acousticness, tempo, popularity, duration, limit, sort) => {
         axios.get('/recommendations', {
@@ -203,7 +205,7 @@ function App() {
             let idString = "";
 
             for(let i = 0; i < tracks.length; i++) {
-                let separator = i != tracks.length-1 ? "," : "";
+                let separator = i !== tracks.length-1 ? "," : "";
                 idString += tracks[i].id + separator;
             }
 
@@ -250,7 +252,7 @@ function App() {
             let newMap = new Map();
 
             for (let i = 0; i < res0.data.items.length; i++) {
-                for (let ii = 0; ii < res0. data.items[i].genres.length; ii++) {
+                for (let ii = 0; ii < res0.data.items[i].genres.length; ii++) {
                     let genre = res0.data.items[i].genres[ii];
 
                     if (newMap.has(genre)) {
@@ -270,7 +272,7 @@ function App() {
             let genreString = '';
             let i = 0;
 
-            for (const [key, value] of genres.entries()) {
+            for (const [key] of genres.entries()) {
                 i++;
                 i <= 1 ? genreString += key + "," : void (0);
             }
@@ -301,17 +303,10 @@ function App() {
                         limit: 3
                     }
                 }).then(res2 => {
-                    let trackString = '';
-
-                    for (let track of res2.data.items) {
-                        trackString += track.id + ',';
-                    }
-
-                    trackString = trackString.slice(0, -1);
-
                     // GET RECOMMENDATIONS
 
                     axios.get('/recommendations', {
+                        // seeds must add up to 5 in total
                         params: {
                             seed_genres: '',
                             seed_artists: artistString,
@@ -336,22 +331,20 @@ function App() {
     }
 
     return (
-        <div className="App">
-            <div className="App-header">
-                <NavBar
-                    token={token}
-                    CLIENT_ID={CLIENT_ID}
-                    REDIRECT_URI={REDIRECT_URI}
-                    AUTH_ENDPOINT={AUTH_ENDPOINT}
-                    RESPONSE_TYPE={RESPONSE_TYPE}
-                    SCOPE={SCOPE}
-                    login={login}
-                    logout={logout}
-                    timer={timer}
-                    profile={profile}
-                />
-            </div>
-            <div className="App-body">
+        <Box sx={{color: 'lightgray'}}>
+            <NavBar
+                token={token}
+                CLIENT_ID={CLIENT_ID}
+                REDIRECT_URI={REDIRECT_URI}
+                AUTH_ENDPOINT={AUTH_ENDPOINT}
+                RESPONSE_TYPE={RESPONSE_TYPE}
+                SCOPE={SCOPE}
+                login={login}
+                logout={logout}
+                timer={timer}
+                profile={profile}
+            />
+            <Box sx={{backgroundColor: '#282c34', height: '100vh'}}>
                 <Routes>
                     {window.localStorage.getItem("token") ? 
                     <Route path="/" element={<Home 
@@ -388,8 +381,9 @@ function App() {
 
                     <Route path="/login" element={<LoginPage login={login}/>} />
                 </Routes>
-            </div>
-        </div>
+            </Box>
+            <Footer />
+        </Box>
     );
 
 }

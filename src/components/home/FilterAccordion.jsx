@@ -156,7 +156,7 @@ export function FilterAccordion(props) {
     
     return (
       <div>
-        <Accordion sx={{backgroundColor: '#FEC260'}}>
+        <Accordion sx={{backgroundColor: '#FEC260'}} defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}>
             <Typography sx={{fontWeight: 'bold'}}>Filter</Typography>

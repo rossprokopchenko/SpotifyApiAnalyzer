@@ -1,10 +1,5 @@
 import React from 'react';
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Divider, Typography } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, List, ListItem, ListItemButton, ListItemText, Divider, Typography, Paper } from '@mui/material';
 import './AlbumShop.css';
 import AlbumCard from '../AlbumCard';
 import TrackCard from '../TrackCard';
@@ -23,7 +18,7 @@ function AlbumShop(props) {
         if (savedAlbums && !using) {
             setAlbumsDisplay(savedAlbums);
         }
-    });
+    }, [savedAlbums, using]);
 
     // this will execute on component initialization
     useEffect(() => {
@@ -59,18 +54,18 @@ function AlbumShop(props) {
 
 
     return (
-        <Box sx={{position: 'absolute',
-            top: '60px',
+        <Box sx={{position: 'relative',
+            top: '10px',
             left: '50%',
             transform: 'translate(-50%, 0)',
             width: '1160px',
-            minHeight: '630px',
-            height: '80%',
+            height: '600px',
             border: '1px solid black'
             }}>
-                <Box sx={{position: 'absolute',
+            <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
+                float: 'left',
                 width: '250px',
                 height: '100%'}}>
                 <Typography variant="h4" sx={{fontFamily: 'Garamond', fontWeight: 'bold'}}>Analyzer</Typography>
@@ -111,8 +106,8 @@ function AlbumShop(props) {
                     width: '100%',
                     height: '100%',
                     flexDirection: 'column',
-                    overflowY: 'auto'}}>
-                    {using == 'tracks' ?
+                    overflowY: 'scroll'}}>
+                    {using === 'tracks' ?
                         <Box sx={{ml: '5px', mr: '5px'}}>
                             <FilterAccordion getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres}/> 
                     

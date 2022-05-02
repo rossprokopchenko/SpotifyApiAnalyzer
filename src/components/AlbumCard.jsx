@@ -1,11 +1,9 @@
 import * as React from 'react';
 import './AlbumCard.css';
-import PropTypes from 'prop-types';
 import { Avatar, Box, Paper, Typography, IconButton, Modal, Button, Backdrop } from '@mui/material';
-import {ReactComponent as SpotifyLogo} from '../resources/spotify-logo.svg';
 
 function AlbumCard(props) {
-    const { savedAlbumsIds, using, album } = props;
+    const { using, album } = props;
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -24,37 +22,20 @@ function AlbumCard(props) {
     };
 
     const boxStyle = () => {
-        switch (using) {
-            case 'recommended' && !savedAlbumsIds.includes(album.id):
-                return {
-                    '& > :not(style)': {
-                        backgroundColor: '#282c00',
-                        width: '132px',
-                        height: '180px',
-                        marginTop: '10px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    },
+        return {
+            '& > :not(style)': {
+                backgroundColor: '#282c40',
+                width: '132px',
+                height: '180px',
+                marginTop: '10px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+            },
 
-                    "& > :hover": {
-                        backgroundColor: '#282c60'
-                    }
-                }
-            default:
-                return {
-                    '& > :not(style)': {
-                        backgroundColor: '#282c40',
-                        width: '132px',
-                        height: '180px',
-                        marginTop: '10px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    },
-
-                    "& > :hover": {
-                        backgroundColor: '#282c60'
-                    }
-                }
+            "& > :hover": {
+                backgroundColor: '#282c60',
+                transition: '200ms ease-in'
+            }
         }
     }
 
