@@ -14,15 +14,13 @@ function App() {
     const [token, setToken] = useState("");
 
     const CLIENT_ID = "ce1dff647ef6413ebee5c2e68552730b";
+    // "https://jade-centaur-bfff2c.netlify.app" "http://localhost:3000"
     const REDIRECT_URI = "https://jade-centaur-bfff2c.netlify.app";
     const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
     const SPOTIFY_API = "https://api.spotify.com/v1";
     const DEFAULT_TIME_RANGE = "medium_term";
     const RESPONSE_TYPE = "token";
-    const SCOPE = "ugc-image-upload user-read-playback-state user-modify-playback-state user-read-currently-playing" +
-        " user-read-private user-read-email user-follow-modify user-follow-read user-library-modify user-library-read" +
-        " streaming app-remote-control user-read-playback-position user-top-read user-read-recently-played playlist-modify-private" +
-        " playlist-read-collaborative playlist-read-private playlist-modify-public";
+    const SCOPE = "user-read-currently-playing user-top-read user-read-recently-played";
 
     const [artists, setArtists] = useState([]);
     const [tracks, setTracks] = useState([]);
@@ -165,28 +163,80 @@ function App() {
         return await axios.get('/audio-features/' + id);
     }
 
-    const getTrackRecommendations = async (genresString, popularity, energy, speech, duration, limit, sort) => {
+    const getTracksInfo = async (tracks) => {
+        let idString = "";
+
+        for(let i = 0; i < tracks.length; i++) {
+            let separator = i != tracks.length-1 ? "," : "";
+            idString += tracks[i].id + separator;
+        }
+
+        return await axios.get('/audio-features', {
+            params: {
+                ids: idString
+            }
+        })
+    }
+
+    const getTrackRecommendations = async (genresString, energy, valence, danceability, acousticness, tempo, popularity, duration, limit, sort) => {
         axios.get('/recommendations', {
             params: {
                 seed_genres: genresString,
-                min_popularity: popularity[0],
-                max_popularity: popularity[1],
                 min_energy: energy[0],
                 max_energy: energy[1],
-                min_speechiness: speech[0],
-                max_speechiness: speech[1],
+                min_valence: valence[0],
+                max_valence: valence[1],
+                min_danceability: danceability[0],
+                max_danceability: danceability[1],
+                min_acousticness: acousticness[0],
+                max_acousticness: acousticness[1],
+                min_tempo: tempo[0],
+                max_tempo: tempo[1],
+                min_popularity: popularity[0],
+                max_popularity: popularity[1],
                 min_duration: duration[0],
                 max_duration: duration[1],
                 limit: limit
             }
         }).then(res => {
             let tracks = res.data.tracks;
+            let idString = "";
 
-            if(sort) {
-                tracks.sort((a,b) => b.popularity - a.popularity);
-            } 
-            
-            setRecommendedTracks(tracks);
+            for(let i = 0; i < tracks.length; i++) {
+                let separator = i != tracks.length-1 ? "," : "";
+                idString += tracks[i].id + separator;
+            }
+
+            axios.get('/audio-features', {
+                params: {
+                    ids: idString
+                }
+            }).then(res => {
+                for(let i = 0; i < tracks.length; i++) {
+                    tracks[i] = {...tracks[i], ...res.data.audio_features[i]};
+                }
+
+                console.log(tracks);
+                console.log(sort);
+    
+                if(sort.energy) {
+                    tracks.sort((a,b) => b.energy - a.energy);
+                } else if (sort.valence) {
+                    tracks.sort((a,b) => b.valence - a.valence);
+                } else if (sort.danceability) {
+                    tracks.sort((a,b) => b.danceability - a.danceability);
+                } else if (sort.acousticness) {
+                    tracks.sort((a,b) => b.acousticness - a.acousticness);
+                } else if (sort.tempo) {
+                    tracks.sort((a,b) => b.tempo - a.tempo);
+                } else if (sort.popularity) {
+                    tracks.sort((a,b) => b.popularity - a.popularity);
+                } else if (sort.duration) {
+                    tracks.sort((a,b) => b.duration_ms - a.duration_ms);
+                }
+
+                setRecommendedTracks(tracks);
+            })
         });
     }
 

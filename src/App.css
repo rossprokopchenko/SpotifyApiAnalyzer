@@ -1,9 +1,10 @@
 .App {
-    background-color: #282c34;
     height: 100vh;
     color: lightgray;
 }
 
 .App-body {
-    height: calc(100vh - 60px);
+    background-color: #282c34;
+    height: 100%;
+    
 }

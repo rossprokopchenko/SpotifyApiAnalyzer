@@ -16,7 +16,7 @@ function AlbumShop(props) {
 
     const [albumsDisplay, setAlbumsDisplay] = useState([]);
     const [using, setUsing] = useState();
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedIndex, setSelectedIndex] = useState();
 
     // this will execute on component update
     useEffect(() => {
@@ -29,10 +29,16 @@ function AlbumShop(props) {
     useEffect(() => {
     }, []);
 
+    const handleTracks = () => {
+        setUsing('tracks');
+        setAlbumsDisplay({ ...[] });
+        setSelectedIndex(0);
+    }
+
     const handleSaved = () => {
         setUsing('saved');
         setAlbumsDisplay({ ...[] });
-        setSelectedIndex(0);
+        setSelectedIndex(1);
 
         const timer = setTimeout(() => {
             setAlbumsDisplay(savedAlbums);
@@ -43,7 +49,7 @@ function AlbumShop(props) {
     const handleRecommended = () => {
         setUsing('recommended');
         setAlbumsDisplay({ ...[] });
-        setSelectedIndex(1);
+        setSelectedIndex(2);
 
         const timer = setTimeout(() => {
             setAlbumsDisplay(recommendedAlbums)
@@ -51,62 +57,76 @@ function AlbumShop(props) {
         return () => clearTimeout(timer);
     }
 
-    const handleTracks = () => {
-        setUsing('tracks');
-        setAlbumsDisplay({ ...[] });
-        setSelectedIndex(2);
-    }
 
     return (
-        <div className="AlbumShop-Grid">
-            <div className="AlbumShop-col1">
+        <Box sx={{position: 'absolute',
+            top: '60px',
+            left: '50%',
+            transform: 'translate(-50%, 0)',
+            width: '1160px',
+            minHeight: '630px',
+            height: '80%',
+            border: '1px solid black'
+            }}>
+                <Box sx={{position: 'absolute',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '250px',
+                height: '100%'}}>
                 <Typography variant="h4" sx={{fontFamily: 'Garamond', fontWeight: 'bold'}}>Analyzer</Typography>
                 <Divider />
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton selected={selectedIndex === 0} component="a" onClick={handleSaved}>
-                            <ListItemText primary="Saved Albums" />
+                        <ListItemButton selected={selectedIndex === 0} component="a" onClick={handleTracks}>
+                            <ListItemText primary="Track Generator" />
                         </ListItemButton>
                     </ListItem>
                     <Divider />
                     <ListItem disablePadding>
-                        <ListItemButton selected={selectedIndex === 1} component="a" onClick={handleRecommended}>
-                            <ListItemText primary="Album Generator" />
+                        <ListItemButton selected={selectedIndex === 1} component="a" onClick={handleSaved}>
+                            <ListItemText primary="Saved Albums" />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
-                        <ListItemButton selected={selectedIndex === 2} component="a" onClick={handleTracks}>
-                            <ListItemText primary="Track Generator" />
+                        <ListItemButton selected={selectedIndex === 2} component="a" onClick={handleRecommended}>
+                            <ListItemText primary="Album Recommendation" />
                         </ListItemButton>
                     </ListItem>
                 </List>
-            </div>
-
-            <div className="AlbumShop-col2">
-                <div className="AlbumShop-col2-row1">
-                    <Paper
-                        sx={{ height: 40}}
-                    >
-
-                    </Paper>
-                    
-                </div>
-                <div className="AlbumShop-col2-row2">
-                    {using == 'tracks' ? 
-                    <div>
-                        <Box sx={{ml: '10px', mr: '10px'}}>
+            </Box>
+            <Box sx={{float: 'right',
+                display: 'flex',
+                width: 'calc( 100% - 250px )',
+                height: '100%',
+                flexDirection: 'column'
+                }}>
+                <Box sx={{display: 'flex',
+                    width: '100%',
+                    flexDirection: 'row'}}>
+                    <Paper sx={{ height: 40}}></Paper>
+                </Box>
+                <Box className="AlbumShop-col2-row2" 
+                sx={{float: 'right',
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%',
+                    flexDirection: 'column',
+                    overflowY: 'auto'}}>
+                    {using == 'tracks' ?
+                        <Box sx={{ml: '5px', mr: '5px'}}>
                             <FilterAccordion getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres}/> 
                     
                             {recommendedTracks ? recommendedTracks.map(track => <TrackCard key={track.id} track={track} getTrackInfo={getTrackInfo} />) : ""}
                         </Box>
-                        
-                    </div>
-                    : <div className="AlbumShop-cards">
-                        {albumsDisplay.length > 0 ? albumsDisplay.map(album => <AlbumCard key={album.id} album={album} savedAlbumsIds={savedAlbumsIds} using={using}/>) : ""}
-                    </div>}
-                </div>
-            </div>
-        </div>
+                    : <Box sx={{display: 'inline-flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        alignContent: 'flex-start'}}>
+                            {albumsDisplay.length > 0 ? albumsDisplay.map(album => <AlbumCard key={album.id} album={album} savedAlbumsIds={savedAlbumsIds} using={using}/>) : ""}
+                        </Box>}
+                </Box>
+            </Box>
+        </Box>
     );
     
 

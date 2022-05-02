@@ -45,7 +45,7 @@ function TrackCard(props) {
         bgcolor: 'black',
         border: '2px solid #000',
         boxShadow: 24,
-        p: 4,
+        p: 2,
     };
 
     const artistString = (artists) => {
@@ -79,7 +79,7 @@ function TrackCard(props) {
                         
                     }}>
                         <Avatar
-                            src={track.album.images ? track.album.images[0].url : ""}
+                            src={track.album.images.length > 0 ? track.album.images[0].url : ""}
                             sx={{
                                 height: '50px',
                                 width: '50px',
@@ -139,7 +139,7 @@ function TrackCard(props) {
             >
                 <Box sx={style}>
                     <Avatar
-                        src={track.album.images[0].url}
+                        src={track.album.images.length > 0 ? track.album.images[0].url : ""}
                         sx={{
                             height: '128px',
                             width: '128px',
@@ -149,13 +149,14 @@ function TrackCard(props) {
                         alt={track.album.artists[0].name}
                         variant="rounded"
                     />
-                    <div style={{marginTop: '10px', display: 'flex', flexDirection: 'row'}}>
-                        {track.explicit ? <Avatar sx={{height: '20px', width: '20px', mr: 1}} src={explicit} variant="rounded" /> : ""}
+                    <div style={{marginTop: '10px', width: '100%', display: 'flex', justifyContent:'center' }}>
+                        {track.explicit ? <Avatar sx={{top: '5px', height: '20px', width: '20px', mr: 1}} src={explicit} variant="rounded" /> : ""}
                         <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ color: 'lightgray' }}>
+                            
                             {track.name}
                         </Typography>
                     </div>
-                    <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
+                    <Typography id="modal-modal-description" sx={{ padding: 2, color: 'lightgray' }}>
                         Artist: {artistString(track.artists)} <br />
                         Album: {track.album.name} <br />
                         Release Date: {track.album.release_date} <br />
@@ -170,25 +171,21 @@ function TrackCard(props) {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography id="modal-modal-description" sx={{ color: 'lightgray' }}>
-                                
-                                <b>Danceability:</b> {percentage(trackInfo.danceability * 100)} <br />
                                 <b>Energy:</b> {percentage(trackInfo.energy * 100)} <br />
                                 <b>Valence:</b> {percentage(trackInfo.valence * 100)} <br />
+                                <b>Danceability:</b> {percentage(trackInfo.danceability * 100)} <br />
                                 <b>Acousticness:</b> {percentage(trackInfo.acousticness * 100)} <br />
                                 <b>Tempo:</b> {Math.round(trackInfo.tempo)} BPM <br />
                                 Instrumentalness: {percentage(trackInfo.instrumentalness * 100)} <br />
                                 Liveness: {percentage(trackInfo.liveness * 100)} <br />
                                 Loudness: {Math.round(trackInfo.loudness)} dB <br />
-                                {/*Mode: {trackInfo.mode} <br />*/}
                                 Speechiness: {percentage(trackInfo.speechiness * 100)} <br />
-                                {/*Time Signature: {trackInfo.time_signature} <br />*/}
                             </Typography>
-                            
-                                <Link href="https://medium.com/@boplantinga/what-do-spotifys-audio-features-tell-us-about-this-year-s-eurovision-song-contest-66ad188e112a#:~:text=Values%20typical%20range%20between%20-60,to%201.0%20the%20attribute%20value." target="_blank">
-                                <Tooltip title="Features Description"><HelpIcon color='info' sx={{mb: '10px', float: 'right'}}/></Tooltip>
-                                </Link>
-                                
-                            
+                            <Link href="https://medium.com/@boplantinga/what-do-spotifys-audio-features-tell-us-about-this-year-s-eurovision-song-contest-66ad188e112a#:~:text=Values%20typical%20range%20between%20-60,to%201.0%20the%20attribute%20value." target="_blank">
+                                <Tooltip title="Features Description">
+                                    <HelpIcon color='info' sx={{mb: '10px', float: 'right'}}/>
+                                </Tooltip>
+                            </Link>
                         </AccordionDetails>
                     </Accordion>
                     <Button sx={{ mt: "10px" }} color="success" variant="outlined" href={track.external_urls.spotify} target="_blank">
