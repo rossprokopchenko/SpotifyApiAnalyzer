@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Box, Paper, Typography, IconButton, Modal, Backdrop, Button, Accordion, AccordionSummary, AccordionDetails, Toolbar, Tooltip, Link } from '@mui/material';
+import { Avatar, Box, Paper, Typography, IconButton, Modal, Backdrop, Button, Accordion, AccordionSummary, AccordionDetails, Tooltip, Link } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HelpIcon from '@mui/icons-material/Help';
 import { useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ function TrackCard(props) {
     const handleDurationLabelFormal = (millis) => {
         var minutes = Math.floor(millis / 60000);
         var seconds = ((millis % 60000) / 1000).toFixed(0);
-        return minutes + (minutes > 1 ? " minutes " : " minute ") + seconds + (seconds == 1 ? " second" : " seconds");
+        return minutes + (minutes > 1 ? " minutes " : " minute ") + seconds + (seconds === 1 ? " second" : " seconds");
     };
 
     const handleOpen = () => {
@@ -43,9 +43,8 @@ function TrackCard(props) {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         bgcolor: 'black',
-        border: '2px solid #000',
         boxShadow: 24,
-        p: 2,
+        padding: 2
     };
 
     const artistString = (artists) => {
@@ -65,18 +64,23 @@ function TrackCard(props) {
 
     return (
         <div>
-            <IconButton onClick={handleOpen} disableRipple={true} sx={{marginTop: '3px', height: '50px', width: '100%'}}>
+            <IconButton onClick={handleOpen} disableRipple={true} sx={{borderRadius: 0, padding: '0px', width: '100%'}}>
                 <Box
                     sx={{'& > :not(style)': {
-                        backgroundColor: '#282c40'
+                        backgroundColor: '#282c40',
+                        mb: '5px'
                     },
                     
-                    width: '100%'}}
+                    width: '100%',
+
+                    '& > :hover': {
+                        backgroundColor: '#282c60',
+                        transition: '200ms ease-in'
+                    }}}
                 >
                     <Paper elevation={3} sx={{
                         display: 'flex',
-                        flexDirection: 'row',
-                        
+                        flexDirection: 'row'
                     }}>
                         <Avatar
                             src={track.album.images.length > 0 ? track.album.images[0].url : ""}

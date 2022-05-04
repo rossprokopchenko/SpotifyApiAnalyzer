@@ -155,7 +155,7 @@ export function FilterAccordion(props) {
     }
     
     return (
-      <div>
+      <div style={{marginBottom: '10px'}}>
         <Accordion sx={{backgroundColor: '#FEC260'}} defaultExpanded={true}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}>

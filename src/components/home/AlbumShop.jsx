@@ -55,7 +55,6 @@ function AlbumShop(props) {
 
     return (
         <Box sx={{position: 'relative',
-            top: '10px',
             left: '50%',
             transform: 'translate(-50%, 0)',
             width: '1160px',

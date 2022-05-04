@@ -11,7 +11,7 @@ function Home(props) {
     },[]);
 
     return (
-        <Box>
+        <Box sx={{padding: '30px'}}>
             <AlbumShop savedAlbums={savedAlbums} savedAlbumsIds={savedAlbumsIds} recommendedAlbums={recommendedAlbums} recommendedTracks={recommendedTracks} getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres} getTrackInfo={getTrackInfo} />
         </Box>
     );

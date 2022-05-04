@@ -27,7 +27,6 @@ function AlbumCard(props) {
                 backgroundColor: '#282c40',
                 width: '132px',
                 height: '180px',
-                marginTop: '10px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
             },
@@ -122,7 +121,7 @@ function AlbumCard(props) {
                         />
                         <Typography
                             variant="body1"
-                            sx={{ fontSize: '13px', fontWeight: 'bold', color: 'lightgray', margin: '2px'}}
+                            sx={{ fontSize: '13px', fontWeight: 'bold', color: 'lightgray', marginTop: '3px'}}
                         >
                             {album.name}
                         </Typography>

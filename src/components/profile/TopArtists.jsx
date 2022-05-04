@@ -30,7 +30,7 @@ function TopArtists(props) {
     }
 
     return (
-        <div style={{marginLeft: '10px'}}>
+        <div>
             <Typography variant="h5">Top 5 artists:</Typography>
             <Box
                 sx={{

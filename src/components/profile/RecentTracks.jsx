@@ -6,7 +6,7 @@ function RecentTracks(props) {
     const { recentTracks, getTrackInfo} = props;
 
     return (
-        <div sx={{marginTop: '10px'}}>
+        <div>
             <Typography variant="h5">Recent Tracks: </Typography>
 
             {recentTracks ? recentTracks.map(track =>
