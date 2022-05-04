@@ -11,7 +11,7 @@ function Footer(props) {
             background: 'black',
             width: '100%',
             textAlign: 'center'}}>
-            <Typography variant='h3' sx={{color: 'white'}}>Spotilyze</Typography>
+            <Typography variant='h3' sx={{color: 'white'}}>Spotilyzer</Typography>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
                 <Box sx={{flexDirection: 'column'}}>
                 </Box>
