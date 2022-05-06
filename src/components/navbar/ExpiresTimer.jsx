@@ -24,8 +24,8 @@ function ExpiresTimer(props) {
     function updateRemainingTime(countdown) {
         setRemainingTime(getRemainingTimeUntilMs(countdown));
 
-        if(getRemainingTimeUntilMs(countdown).minutes == defaultRemainingTime.minutes
-        && getRemainingTimeUntilMs(countdown).seconds == defaultRemainingTime.seconds
+        if(getRemainingTimeUntilMs(countdown).minutes === defaultRemainingTime.minutes
+        && getRemainingTimeUntilMs(countdown).seconds === defaultRemainingTime.seconds
         && window.localStorage.getItem("token")) {
             clearInterval(intervalId);
             logout();

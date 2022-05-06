@@ -8,13 +8,13 @@ function LoginPage(props) {
 
     return (
         <Box>
-            <Box sx={{height: '100vh',
+            <Box sx={{height: 'calc(100vh - 60px)',
                 display: 'flex',
                 flexFlow: 'column',
                 alignItems: 'center',
                 justifyContent: 'center'}}>
                 <Typography variant='h3'>Please Login to Spotify</Typography>
-                <Button sx={{mt: 3, width: '300px', height: '80px', fontSize: '30px'}} variant="outlined" color="success" onClick={login} endIcon={<SpotifyLogo />}>Login</Button>
+                <Button sx={{mt: 3, width: '300px', height: '80px', fontSize: '30px'}} variant="outlined" color="success" onClick={login} endIcon={<SpotifyLogo height='50px' width='50px' />}>Login</Button>
             </Box>
         </Box>
     );

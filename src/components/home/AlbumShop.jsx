@@ -58,7 +58,7 @@ function AlbumShop(props) {
             left: '50%',
             transform: 'translate(-50%, 0)',
             width: '1160px',
-            height: '600px',
+            height: '90%',
             border: '1px solid black'
             }}>
             <Box sx={{

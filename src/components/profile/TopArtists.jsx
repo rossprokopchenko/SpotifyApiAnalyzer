@@ -1,6 +1,6 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
 import { Box, Paper, Typography, Slider, Avatar } from '@mui/material';
+import './TopArtists.css';
 
 function TopArtists(props) {
     const { artists, getArtists } = props;
@@ -31,7 +31,7 @@ function TopArtists(props) {
 
     return (
         <div>
-            <Typography variant="h5">Top 5 artists:</Typography>
+            <Typography variant="h5">Top artists:</Typography>
             <Box
                 sx={{
                     flexWrap: 'wrap',
@@ -42,7 +42,13 @@ function TopArtists(props) {
                 }}
             >
                 <Paper elevation={3} sx={{paddingTop: '10px'}}>
-                    <div style={{ marginLeft: '10px', color: 'lightgray', display: 'flex', flexDirection: 'column'}}>
+                    <div className='TopArtists' style={{ 
+                        marginLeft: '10px', 
+                        color: 'lightgray', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        height: '180px', 
+                        overflowY: 'auto'}}>
                     
                         {artists.map(artist =>
                             <div key={artist.id} style={{display: 'flex', flexDirection: 'row', whiteSpace: 'nowrap'}}>

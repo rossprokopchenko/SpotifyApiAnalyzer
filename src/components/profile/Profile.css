@@ -1,5 +1,5 @@
 .Profile {
-    height: 100%;
+    min-height: 100%;
 }
 
 .Profile-content {
@@ -9,7 +9,4 @@
 }
 
 .Profile-content-2 {
-    display: flow-root;
-    padding-left: 10px;
-    padding-right: 10px;
 }

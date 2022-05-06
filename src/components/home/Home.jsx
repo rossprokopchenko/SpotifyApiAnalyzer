@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AlbumShop from './AlbumShop';
 import './Home.css';
 import Box from '@mui/material/Box';
@@ -11,7 +11,7 @@ function Home(props) {
     },[]);
 
     return (
-        <Box sx={{padding: '30px'}}>
+        <Box sx={{height: '100vh', padding: '30px'}}>
             <AlbumShop savedAlbums={savedAlbums} savedAlbumsIds={savedAlbumsIds} recommendedAlbums={recommendedAlbums} recommendedTracks={recommendedTracks} getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres} getTrackInfo={getTrackInfo} />
         </Box>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Paper, Typography, Slider, Avatar } from '@mui/material';
+import './TopTracks.css';
 
 function TopTracks(props) {
     const { tracks, getTracks } = props;
@@ -30,7 +31,7 @@ function TopTracks(props) {
 
     return (
         <div style={{ marginLeft: '10px' }}>
-            <Typography variant="h5">Top 5 tracks:</Typography>
+            <Typography variant="h5">Top tracks:</Typography>
             <Box
                 sx={{
                     flexWrap: 'wrap',
@@ -41,7 +42,13 @@ function TopTracks(props) {
                 }}
             >
                 <Paper elevation={3} sx={{paddingTop: '10px'}}>
-                    <div style={{ marginLeft: '10px', color: 'lightgray', display: 'flex', flexDirection: 'column' }}>
+                    <div className='TopTracks' style={{ 
+                        marginLeft: '10px', 
+                        color: 'lightgray', 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        height: '180px', 
+                        overflowY: 'auto'}}>
                         {tracks.map(track =>
                             <div key={track.id} style={{display: 'flex', flexDirection: 'row', whiteSpace: 'nowrap'}}>
                                 <Typography variant="subtitle1">{tracks.indexOf(track) + 1} -</Typography>

@@ -25,7 +25,7 @@ function App() {
     const [artists, setArtists] = useState([]);
     const [tracks, setTracks] = useState([]);
     const [recentTracks, setRecentTracks] = useState([]);
-    const [genres, setGenres] = useState(new Map());
+    const [topGenres, setTopGenres] = useState(new Map());
     const [savedAlbums, setSavedAlbums] = useState([]);
     const [savedAlbumsIds, setSavedAlbumsIds] = useState([]);
     const [profile, setProfile] = useState("");
@@ -68,10 +68,12 @@ function App() {
         getProfile();
         getArtists(DEFAULT_TIME_RANGE);
         getTracks(DEFAULT_TIME_RANGE);
-        getRecentTracks(10);
+        getRecentTracks(25);
         getCurrentlyPlaying();
         getGenreSeeds();
         getAlbumRecommendations();
+
+        
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -101,8 +103,7 @@ function App() {
     const getArtists = async (timeRange) => {
         axios.get('/me/top/artists', {
             params: {
-                time_range: timeRange,
-                limit: 5
+                time_range: timeRange
             }
         }).then(response => {
             setArtists(response.data.items);
@@ -112,8 +113,7 @@ function App() {
     const getTracks = async (timeRange) => {
         axios.get('/me/top/tracks', {
             params: {
-                time_range: timeRange,
-                limit: 5
+                time_range: timeRange
             }
         }).then(response => {
             setTracks(response.data.items);
@@ -265,14 +265,12 @@ function App() {
 
             let sortedMap = new Map([...newMap.entries()].sort((a, b) => b[1] - a[1]));
 
-            for (const [key, value] of sortedMap.entries()) {
-                setGenres(genres.set(key, value));
-            }
+            setTopGenres(sortedMap);
 
             let genreString = '';
             let i = 0;
 
-            for (const [key] of genres.entries()) {
+            for (const [key] of topGenres.entries()) {
                 i++;
                 i <= 1 ? genreString += key + "," : void (0);
             }
@@ -344,7 +342,7 @@ function App() {
                 timer={timer}
                 profile={profile}
             />
-            <Box sx={{backgroundColor: '#282c34', height: '100vh'}}>
+            <Box sx={{backgroundColor: '#282c34', height: '100%'}}>
                 <Routes>
                     {window.localStorage.getItem("token") ? 
                     <Route path="/" element={<Home 
@@ -372,7 +370,8 @@ function App() {
                         profile={profile} 
                         artists={artists} 
                         tracks={tracks} 
-                        recentTracks={recentTracks} 
+                        recentTracks={recentTracks}
+                        topGenres={topGenres}
                         getArtists={getArtists} 
                         getTracks={getTracks} 
                         currentTrack={currentTrack}
