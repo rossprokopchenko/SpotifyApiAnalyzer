@@ -1,10 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Paper, Typography, Slider } from '@mui/material';
 import { PieChart } from 'react-minimal-pie-chart';
 
 function TopGenres(props) {
-    const { genres } = props;
+    const { genres, getGenres } = props;
 
     const [chartData, setChartData] = useState([]);
     const [hovered, setHovered] = useState();
@@ -65,13 +65,37 @@ function TopGenres(props) {
 
     }, [genres]);
 
+    const setSliderValue = (index) => {
+        if (index === 0) {
+            return '1 month';
+        } else if (index === 1) {
+            return '6 months';
+        } else if (index === 2) {
+            return 'several years';
+        }
+    }
+
+    const sliderChange = (event, value) => {
+        let sliderValue = '';
+
+        if (value === 0) {
+            sliderValue = 'short_term';
+        } else if (value === 1) {
+            sliderValue = 'medium_term';
+        } else if (value === 2) {
+            sliderValue = 'long_term';
+        }
+
+        getGenres(sliderValue);
+    }
+
     return (
         <div>
             <Typography variant="h5">Top genres:</Typography>
                 <Box
                     sx={{
                         flexWrap: 'wrap',
-                        height: '300px',
+                        width: '270px',
                         '& > :not(style)': {
                             backgroundColor: '#282c40'
                         }
@@ -81,9 +105,6 @@ function TopGenres(props) {
                         <Box sx={{display: 'flow-root', flexDirection: 'row'}}>
                             <Box sx={{float: 'left', margin: '10px', border: '1px solid black', borderRadius: '3px'}}>
                                 <PieChart
-                                    animate
-                                    animationDuration={500}
-                                    animationEasing="ease-out"
                                     style={{height: '250px', width: '250px'}}
                                     data={data} 
                                     lineWidth={50} 
@@ -105,16 +126,29 @@ function TopGenres(props) {
                                         setHovered(undefined);
                                     }}
                                     startAngle={0}
+                                    animate
                                 />
                             </Box>
-                            <Box sx={{padding: '10px'}}>
+                            <Box sx={{padding: '15px'}}>
                                     {chartData.map(genre => 
-                                    <div style={{}}>
-                                        <Typography variant='h6' sx={{color: genre.color}}>{Math.round((genre.value / totalValue) * 100)}% - {genre.title}</Typography>
+                                    <div>
+                                        <Typography variant='h6' sx={{color: genre.color}}><b>{Math.round((genre.value / totalValue) * 100)}%</b> {genre.title}</Typography>
                                     </div>
                                     
                                     )}
                             </Box>
+                            <Slider
+                                aria-label="Term"
+                                defaultValue={2}
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={setSliderValue}
+                                step={1}
+                                marks
+                                min={0}
+                                max={2}
+                                onChangeCommitted={sliderChange}
+                                sx={{width: '175px', ml: '50px' }}
+                                />
                         </Box>
                         
                     </Paper>

@@ -52,7 +52,7 @@ function TopArtists(props) {
                     
                         {artists.map(artist =>
                             <div key={artist.id} style={{display: 'flex', flexDirection: 'row', whiteSpace: 'nowrap'}}>
-                                <Typography variant="subtitle1">{artists.indexOf(artist) + 1} - </Typography>
+                                <Typography variant="subtitle1">{artists.indexOf(artist) + 1} </Typography>
                                 <Avatar sx={{ml: 1, height: '30px', width: '30px'}} src={artist.images[0].url} />
                                 <Typography sx={{ml: 1, mb: 1, 
                                     overflow: 'hidden',
@@ -70,7 +70,7 @@ function TopArtists(props) {
                         min={0}
                         max={2}
                         onChangeCommitted={sliderChange}
-                        sx={{ width: '200px', marginLeft: '30px' }}
+                        sx={{width: '200px', ml: '25px' }}
                         />
                 </Paper>
             </Box>

@@ -6,7 +6,7 @@ function CurrentTrack(props) {
     const { currentTrack } = props;
 
     return (
-        <div>
+        <div style={{width: '497px'}}>
             <Typography variant="h5">Currently Listening To: </Typography>
 
             <TrackCard id={currentTrack.id} track={currentTrack} />

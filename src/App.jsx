@@ -120,6 +120,32 @@ function App() {
         })
     }
 
+    const getGenres = async (timeRange) => {
+        axios.get('/me/top/artists', {
+            params: {
+                time_range: timeRange
+            }
+        }).then(res0 => {
+            let newMap = new Map();
+
+            for (let i = 0; i < res0.data.items.length; i++) {
+                for (let ii = 0; ii < res0.data.items[i].genres.length; ii++) {
+                    let genre = res0.data.items[i].genres[ii];
+
+                    if (newMap.has(genre)) {
+                        newMap.set(genre, newMap.get(genre) + 1);
+                    } else {
+                        newMap.set(genre, 1);
+                    }
+                }
+            }
+
+            let sortedMap = new Map([...newMap.entries()].sort((a, b) => b[1] - a[1]));
+
+            setTopGenres(sortedMap);
+        });
+    }
+
     const getRecentTracks = async (limit) => {
         axios.get('/me/player/recently-played', {
             params: {
@@ -374,6 +400,7 @@ function App() {
                         topGenres={topGenres}
                         getArtists={getArtists} 
                         getTracks={getTracks} 
+                        getGenres={getGenres}
                         currentTrack={currentTrack}
                         getTrackInfo={getTrackInfo}
                         />} />

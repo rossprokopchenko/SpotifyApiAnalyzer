@@ -51,7 +51,7 @@ function TopTracks(props) {
                         overflowY: 'auto'}}>
                         {tracks.map(track =>
                             <div key={track.id} style={{display: 'flex', flexDirection: 'row', whiteSpace: 'nowrap'}}>
-                                <Typography variant="subtitle1">{tracks.indexOf(track) + 1} -</Typography>
+                                <Typography variant="subtitle1">{tracks.indexOf(track) + 1} </Typography>
                                 <Avatar sx={{ml: 1, height: '30px', width: '30px'}} src={track.album.images[0].url} />
                                 <Typography sx={{
                                     ml: 1, 
@@ -73,7 +73,7 @@ function TopTracks(props) {
                         min={0}
                         max={2}
                         onChangeCommitted={sliderChange}
-                        sx={{ width: '200px', marginLeft: '30px' }}
+                        sx={{ width: '200px', marginLeft: '25px' }}
                     />
                 </Paper>
             </Box>
