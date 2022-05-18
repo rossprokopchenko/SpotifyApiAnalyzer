@@ -7,48 +7,66 @@ import { useEffect, useState } from 'react';
 import { FilterAccordion } from './FilterAccordion';
 
 function AlbumShop(props) {
-    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getTrackRecommendations, availableGenres, getTrackInfo } = props;
+    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getAlbumRecommendations, getTrackRecommendations, availableGenres, getTrackInfo } = props;
 
     const [albumsDisplay, setAlbumsDisplay] = useState([]);
     const [using, setUsing] = useState();
-    const [selectedIndex, setSelectedIndex] = useState();
+    const [selectedIndex, setSelectedIndex] = useState(1);
+
+    const defaultSortCheckboxes = {
+        energy: false,
+        valence: false,
+        danceability: false,
+        acousticness: false,
+        tempo: false,
+        popularity: false,
+        duration: false
+      }
 
     // this will execute on component update
     useEffect(() => {
         if (savedAlbums && !using) {
             setAlbumsDisplay(savedAlbums);
         }
-    }, [savedAlbums, using]);
 
-    // this will execute on component initialization
-    useEffect(() => {
-    }, []);
+        if(recommendedAlbums && using === 'recommended') {
+            setAlbumsDisplay(recommendedAlbums)
+        }
+    }, [savedAlbums, recommendedAlbums]);
 
     const handleTracks = () => {
+        if(selectedIndex === 0) return;
+
         setUsing('tracks');
         setAlbumsDisplay({ ...[] });
         setSelectedIndex(0);
+        getTrackRecommendations("hip-hop", [0,1], [0,1], [0,1], [0,1], [0,250], [0,100], [0,900000], 20, defaultSortCheckboxes);
     }
 
     const handleSaved = () => {
+        if(selectedIndex === 1) return;
+
         setUsing('saved');
         setAlbumsDisplay({ ...[] });
         setSelectedIndex(1);
 
         const timer = setTimeout(() => {
             setAlbumsDisplay(savedAlbums);
-        }, 50);
+        }, 20);
         return () => clearTimeout(timer);
     }
 
     const handleRecommended = () => {
+        if(selectedIndex === 2) return;
+
         setUsing('recommended');
         setAlbumsDisplay({ ...[] });
         setSelectedIndex(2);
+        getAlbumRecommendations();
 
         const timer = setTimeout(() => {
-            setAlbumsDisplay(recommendedAlbums)
-        }, 50);
+            
+        }, 20);
         return () => clearTimeout(timer);
     }
 

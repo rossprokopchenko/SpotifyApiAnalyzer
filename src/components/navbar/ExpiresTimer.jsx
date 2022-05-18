@@ -7,7 +7,6 @@ const defaultRemainingTime = {
     seconds: '00'
 }
 
-
 function ExpiresTimer(props) {
     const {timer, logout} = props;
     const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
@@ -31,10 +30,10 @@ function ExpiresTimer(props) {
             logout();
         }
     }
-
+    
     return (
         <div>
-            <Badge bg='secondary' text='white'>{remainingTime.minutes} : {remainingTime.seconds}</Badge>
+            <Badge bg="secondary">{remainingTime.minutes} : {remainingTime.seconds}</Badge>
         </div>
     );
 }

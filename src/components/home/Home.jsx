@@ -5,14 +5,25 @@ import './Home.css';
 import Box from '@mui/material/Box';
 
 function Home(props) {
-    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getTrackRecommendations, availableGenres, getTrackInfo } = props;
+    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getAlbumRecommendations, getTrackRecommendations, availableGenres, getTrackInfo } = props;
+
+    document.title = 'Home | Spotilyzer :)';
 
     useEffect(() => {
     },[]);
 
     return (
         <Box sx={{height: '100vh', padding: '30px'}}>
-            <AlbumShop savedAlbums={savedAlbums} savedAlbumsIds={savedAlbumsIds} recommendedAlbums={recommendedAlbums} recommendedTracks={recommendedTracks} getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres} getTrackInfo={getTrackInfo} />
+            <AlbumShop 
+                savedAlbums={savedAlbums} 
+                savedAlbumsIds={savedAlbumsIds} 
+                recommendedAlbums={recommendedAlbums} 
+                recommendedTracks={recommendedTracks} 
+                getAlbumRecommendations={getAlbumRecommendations} 
+                getTrackRecommendations={getTrackRecommendations} 
+                availableGenres={availableGenres} 
+                getTrackInfo={getTrackInfo} 
+            />
         </Box>
     );
     

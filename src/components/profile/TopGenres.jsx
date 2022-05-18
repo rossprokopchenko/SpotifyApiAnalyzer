@@ -9,6 +9,7 @@ function TopGenres(props) {
     const [chartData, setChartData] = useState([]);
     const [hovered, setHovered] = useState();
     const [totalValue, setTotalValue] = useState();
+    const [sliderValue, setSliderValue] = useState(1);
 
     const fontStyle = {
         fontSize: '6px',
@@ -65,7 +66,7 @@ function TopGenres(props) {
 
     }, [genres]);
 
-    const setSliderValue = (index) => {
+    const setSliderLabel = (index) => {
         if (index === 0) {
             return '1 month';
         } else if (index === 1) {
@@ -76,17 +77,23 @@ function TopGenres(props) {
     }
 
     const sliderChange = (event, value) => {
-        let sliderValue = '';
+        let range = '';
+        if((sliderValue === 0 && value === 0)
+        || (sliderValue === 1 && value === 1)
+        || (sliderValue === 2 && value === 2)) return;
 
         if (value === 0) {
-            sliderValue = 'short_term';
+            setSliderValue(0);
+            range = 'short_term';
         } else if (value === 1) {
-            sliderValue = 'medium_term';
+            setSliderValue(1);
+            range = 'medium_term';
         } else if (value === 2) {
-            sliderValue = 'long_term';
+            setSliderValue(2);
+            range = 'long_term';
         }
 
-        getGenres(sliderValue);
+        getGenres(range);
     }
 
     return (
@@ -95,25 +102,25 @@ function TopGenres(props) {
                 <Box
                     sx={{
                         flexWrap: 'wrap',
-                        width: '270px',
                         '& > :not(style)': {
                             backgroundColor: '#282c40'
                         }
                     }}
                 >
                     <Paper elevation={3}>
-                        <Box sx={{display: 'flow-root', flexDirection: 'row'}}>
-                            <Box sx={{float: 'left', margin: '10px', border: '1px solid black', borderRadius: '3px'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                            <Box sx={{float: 'left', margin: '10px', border: '2px solid black', borderRadius: '3px'}}>
                                 <PieChart
                                     style={{height: '250px', width: '250px'}}
                                     data={data} 
-                                    lineWidth={50} 
+                                    lineWidth={45} 
                                     paddingAngle={2}
                                     segmentsShift={(index) => {
                                         return index === hovered
                                           ? 5
                                           : 0;
                                       }}
+                                    segmentsStyle={{border: '1px solid black'}}
                                     viewBoxSize={[120, 120]}
                                     center={[60, 60]}
                                     /*label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}*/
@@ -129,26 +136,27 @@ function TopGenres(props) {
                                     animate
                                 />
                             </Box>
-                            <Box sx={{padding: '15px'}}>
+                            <Box sx={{display: 'flex', flexDirection: 'column', margin: '10px', height: '250px'}}>
                                     {chartData.map(genre => 
                                     <div>
                                         <Typography variant='h6' sx={{color: genre.color}}><b>{Math.round((genre.value / totalValue) * 100)}%</b> {genre.title}</Typography>
                                     </div>
                                     
                                     )}
-                            </Box>
-                            <Slider
+                                    <Slider
                                 aria-label="Term"
-                                defaultValue={2}
+                                defaultValue={1}
                                 valueLabelDisplay="auto"
-                                valueLabelFormat={setSliderValue}
+                                valueLabelFormat={setSliderLabel}
                                 step={1}
                                 marks
                                 min={0}
                                 max={2}
                                 onChangeCommitted={sliderChange}
-                                sx={{width: '175px', ml: '50px' }}
+                                sx={{width: '180px', ml: '15px', mt: 'auto'}}
                                 />
+                            </Box>
+                            
                         </Box>
                         
                     </Paper>

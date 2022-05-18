@@ -33,6 +33,7 @@ function App() {
     const [recommendedAlbums, setRecommendedAlbums] = useState([]);
     const [recommendedTracks, setRecommendedTracks] = useState([]);
     const [availableGenres, setAvailableGenres] = useState([]);
+    const [averageAudioFeatures, setAverageAudioFeatures] = useState();
     const [timer, setTimer] = useState();
 
     const navigate = useNavigate();
@@ -68,13 +69,11 @@ function App() {
         getProfile();
         getArtists(DEFAULT_TIME_RANGE);
         getTracks(DEFAULT_TIME_RANGE);
+        getGenres(DEFAULT_TIME_RANGE);
         getRecentTracks(25);
         getCurrentlyPlaying();
         getGenreSeeds();
-        getAlbumRecommendations();
-
-        
-
+        getAudioFeatures();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -146,6 +145,58 @@ function App() {
         });
     }
 
+    const getAudioFeatures = async (timeRange) => {
+        axios.get('/me/top/tracks', {
+            params: {
+                time_range: timeRange,
+                limit: 50
+            }
+        }).then(response => {
+            let trackString = '';
+            for (let i = 0; i < response.data.items.length; i++) {
+                let track = response.data.items[i];
+                let separator = i === response.data.items.length-1 ? '' : ',';
+                trackString += track.id + separator;
+            }
+
+            axios.get('/audio-features', {
+                params: {
+                    ids: trackString
+                }
+            }).then(res2 => {
+                var averageEnergy = 0;
+                var averageValence = 0;
+                var averageDanceability = 0;
+                var averageAcousticness = 0;
+                var averageTempo = 0;
+
+                for (let feature of res2.data.audio_features) {
+                    averageEnergy += feature.energy;
+                    averageValence += feature.valence;
+                    averageDanceability += feature.danceability;
+                    averageAcousticness += feature.acousticness;
+                    averageTempo += feature.tempo;
+                }
+
+                averageEnergy = (averageEnergy * 2).toFixed(1);
+                averageValence = (averageValence * 2).toFixed(1);
+                averageDanceability = (averageDanceability * 2).toFixed(1);
+                averageAcousticness = (averageAcousticness * 2).toFixed(1);
+                averageTempo = Math.round(averageTempo / 50)
+
+                const audioFeatures = {
+                    "Acousticness": averageAcousticness,
+                    "Valence": averageValence,
+                    "Energy": averageEnergy,
+                    "Danceability": averageDanceability,
+                    "Tempo": averageTempo
+                }
+
+                setAverageAudioFeatures(audioFeatures);
+            })
+        })
+    }
+
     const getRecentTracks = async (limit) => {
         axios.get('/me/player/recently-played', {
             params: {
@@ -190,22 +241,6 @@ function App() {
         return await axios.get('/audio-features/' + id);
     }
 
-    /*
-    const getTracksInfo = async (tracks) => {
-        let idString = "";
-
-        for(let i = 0; i < tracks.length; i++) {
-            let separator = i !== tracks.length-1 ? "," : "";
-            idString += tracks[i].id + separator;
-        }
-
-        return await axios.get('/audio-features', {
-            params: {
-                ids: idString
-            }
-        })
-    }*/
-
     const getTrackRecommendations = async (genresString, energy, valence, danceability, acousticness, tempo, popularity, duration, limit, sort) => {
         axios.get('/recommendations', {
             params: {
@@ -244,9 +279,6 @@ function App() {
                     tracks[i] = {...tracks[i], ...res.data.audio_features[i]};
                 }
 
-                console.log(tracks);
-                console.log(sort);
-    
                 if(sort.energy) {
                     tracks.sort((a,b) => b.energy - a.energy);
                 } else if (sort.valence) {
@@ -376,6 +408,7 @@ function App() {
                         savedAlbumsIds={savedAlbumsIds} 
                         recommendedAlbums={recommendedAlbums} 
                         recommendedTracks={recommendedTracks} 
+                        getAlbumRecommendations={getAlbumRecommendations}
                         getTrackRecommendations={getTrackRecommendations} 
                         availableGenres={availableGenres} 
                         getTrackInfo={getTrackInfo}
@@ -387,10 +420,11 @@ function App() {
                         savedAlbumsIds={savedAlbumsIds} 
                         recommendedAlbums={recommendedAlbums} 
                         recommendedTracks={recommendedTracks} 
+                        getAlbumRecommendations={getAlbumRecommendations}
                         getTrackRecommendations={getTrackRecommendations}
                         availableGenres={availableGenres} 
                         getTrackInfo={getTrackInfo}
-                        />} />
+                        />} title="Home | Spotilizer :)" />
 
                     <Route path="/profile" element={<Profile 
                         profile={profile} 
@@ -403,6 +437,7 @@ function App() {
                         getGenres={getGenres}
                         currentTrack={currentTrack}
                         getTrackInfo={getTrackInfo}
+                        averageAudioFeatures={averageAudioFeatures}
                         />} />
 
                     <Route path="/login" element={<LoginPage login={login}/>} />

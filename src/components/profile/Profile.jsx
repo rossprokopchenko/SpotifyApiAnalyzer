@@ -6,10 +6,13 @@ import TopArtists from './TopArtists';
 import TopTracks from './TopTracks';
 import TopGenres from './TopGenres';
 import CurrentTrack from './CurrentTrack';
+import AudioFeatures from './AudioFeatures';
 import './Profile.css'
 
 function Profile(props) {
-    const { profile, artists, tracks, recentTracks, currentTrack, topGenres, getArtists, getTracks, getGenres, getTrackInfo } = props;
+    const { profile, artists, tracks, recentTracks, currentTrack, topGenres, getArtists, getTracks, getGenres, getTrackInfo, averageAudioFeatures } = props;
+
+    document.title = "Profile | Spotilyzer :)";
 
     return (
         <div className="Profile">
@@ -22,15 +25,16 @@ function Profile(props) {
                 flexDirection: 'column',
                 paddingLeft: '10px',
                 paddingRight: '10px'}}>
-                <div style={{float: 'right'}}>
+                <div style={{display: 'flex', flexDirection: 'column', float: 'right'}}>
                     <TopGenres genres={topGenres} getGenres={getGenres} />
+                    <AudioFeatures averageAudioFeatures={averageAudioFeatures} profile={profile} />
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <TopArtists artists={artists} getArtists={getArtists} />
                     <TopTracks tracks={tracks} getTracks={getTracks} />
                 </div>
                 <div style={{marginTop: '20px'}}>
-                    {currentTrack ? <CurrentTrack currentTrack={currentTrack} /> : ""}
+                    {currentTrack ? <CurrentTrack currentTrack={currentTrack} getTrackInfo={getTrackInfo} /> : ""}
                     <RecentTracks recentTracks={recentTracks} getTrackInfo={getTrackInfo} />
                 </div>
                 

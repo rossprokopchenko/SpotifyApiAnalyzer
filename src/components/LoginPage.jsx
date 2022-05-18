@@ -6,6 +6,8 @@ import './LoginPage.css';
 function LoginPage(props) {
     const {login} = props;
 
+    document.title = "Login | Spotilyzer :)";
+
     return (
         <Box>
             <Box sx={{height: 'calc(100vh - 60px)',

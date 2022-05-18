@@ -27,14 +27,14 @@ export function FilterAccordion(props) {
       duration: false
     }
 
-    const [genresString, setGenresString] = useState("hip-hop, pop");
+    const [genresString, setGenresString] = useState("hip-hop");
     const [popularityValue, setPopularityValue] = useState([0, 100]);
     const [energyValue, setEnergyValue] = useState([0, 1]);
     const [danceabilityValue, setDanceabilityValue] = useState([0, 1]);
     const [valenceValue, setValenceValue] = useState([0, 1]);
     const [acousticnessValue, setAcousticnessValue] = useState([0, 1]);
-    const [tempoValue, setTempoValue] = useState([0, 500]);
-    const [durationValue, setDurationValue] = useState([0, 10000000]);
+    const [tempoValue, setTempoValue] = useState([0, 250]);
+    const [durationValue, setDurationValue] = useState([0, 900000]);
     const [limitValue, setLimitValue] = useState(20); 
     const [sortCheck, setSortCheck] = useState(defaultSortCheckboxes);
 
