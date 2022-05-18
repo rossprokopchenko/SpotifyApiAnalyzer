@@ -10,7 +10,7 @@ import AudioFeatures from './AudioFeatures';
 import './Profile.css'
 
 function Profile(props) {
-    const { profile, artists, tracks, recentTracks, currentTrack, topGenres, getArtists, getTracks, getGenres, getTrackInfo, averageAudioFeatures } = props;
+    const { profile, artists, tracks, recentTracks, currentTrack, topGenres, getArtists, getTracks, getGenres, getTrackInfo, averageAudioFeatures, getAudioFeatures } = props;
 
     document.title = "Profile | Spotilyzer :)";
 
@@ -27,7 +27,7 @@ function Profile(props) {
                 paddingRight: '10px'}}>
                 <div style={{display: 'flex', flexDirection: 'column', float: 'right'}}>
                     <TopGenres genres={topGenres} getGenres={getGenres} />
-                    <AudioFeatures averageAudioFeatures={averageAudioFeatures} profile={profile} />
+                    <AudioFeatures averageAudioFeatures={averageAudioFeatures} getAudioFeatures={getAudioFeatures} />
                 </div>
                 <div style={{display: 'flex', flexDirection: 'row'}}>
                     <TopArtists artists={artists} getArtists={getArtists} />

@@ -1,30 +1,37 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Box, Paper, Typography, Slider } from '@mui/material';
-import { PieChart } from 'react-minimal-pie-chart';
+import { Doughnut } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
 
 function TopGenres(props) {
     const { genres, getGenres } = props;
 
     const [chartData, setChartData] = useState([]);
-    const [hovered, setHovered] = useState();
     const [totalValue, setTotalValue] = useState();
     const [sliderValue, setSliderValue] = useState(1);
 
-    const fontStyle = {
-        fontSize: '6px',
-        fontWeight: 'bold'
+    const data = {
+        labels: chartData.map(a => a.title),
+          datasets: [{
+            data: chartData.map(a => (a.value / totalValue * 100).toFixed(0)),
+            backgroundColor: chartData.map(a => a.color),
+            hoverOffset: 20,
+            hoverBorderRadius: 3
+          }]
     }
 
-    const data = chartData.map((entry, i) => {
-        if (hovered === i) {
-          return {
-            ...entry
-          };
+    const options = {
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        layout: {
+            padding: 15
         }
-
-        return entry;
-      });
+        
+    }
 
     useEffect(() => {
         if(typeof genres !== undefined){
@@ -60,6 +67,7 @@ function TopGenres(props) {
                 }
                 
             }
+
             setTotalValue(total);
             setChartData(data);
         }
@@ -109,52 +117,28 @@ function TopGenres(props) {
                 >
                     <Paper elevation={3}>
                         <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                            <Box sx={{float: 'left', margin: '10px', border: '2px solid black', borderRadius: '3px'}}>
-                                <PieChart
-                                    style={{height: '250px', width: '250px'}}
-                                    data={data} 
-                                    lineWidth={45} 
-                                    paddingAngle={2}
-                                    segmentsShift={(index) => {
-                                        return index === hovered
-                                          ? 5
-                                          : 0;
-                                      }}
-                                    segmentsStyle={{border: '1px solid black'}}
-                                    viewBoxSize={[120, 120]}
-                                    center={[60, 60]}
-                                    /*label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}*/
-                                    labelPosition={75} 
-                                    labelStyle={({index}) => fontStyle(index)}
-                                    onMouseOver={(_, index) => {
-                                        setHovered(index);
-                                    }}
-                                    onMouseOut={(_, index) => {
-                                        setHovered(undefined);
-                                    }}
-                                    startAngle={0}
-                                    animate
-                                />
+                            <Box sx={{height: '250px', width: '250px', float: 'left', margin: '10px', border: '2px solid black', borderRadius: '3px'}}>
+                                <Doughnut data={data} options={options} width={"30%"} />
                             </Box>
                             <Box sx={{display: 'flex', flexDirection: 'column', margin: '10px', height: '250px'}}>
                                     {chartData.map(genre => 
-                                    <div>
+                                    <div key={genre.value}>
                                         <Typography variant='h6' sx={{color: genre.color}}><b>{Math.round((genre.value / totalValue) * 100)}%</b> {genre.title}</Typography>
                                     </div>
                                     
                                     )}
                                     <Slider
-                                aria-label="Term"
-                                defaultValue={1}
-                                valueLabelDisplay="auto"
-                                valueLabelFormat={setSliderLabel}
-                                step={1}
-                                marks
-                                min={0}
-                                max={2}
-                                onChangeCommitted={sliderChange}
-                                sx={{width: '180px', ml: '15px', mt: 'auto'}}
-                                />
+                                        aria-label="Term"
+                                        defaultValue={1}
+                                        valueLabelDisplay="auto"
+                                        valueLabelFormat={setSliderLabel}
+                                        step={1}
+                                        marks
+                                        min={0}
+                                        max={2}
+                                        onChangeCommitted={sliderChange}
+                                        sx={{width: '180px', ml: '15px', mt: 'auto'}}
+                                    />
                             </Box>
                             
                         </Box>

@@ -178,17 +178,17 @@ function App() {
                     averageTempo += feature.tempo;
                 }
 
-                averageEnergy = (averageEnergy * 2).toFixed(1);
-                averageValence = (averageValence * 2).toFixed(1);
-                averageDanceability = (averageDanceability * 2).toFixed(1);
-                averageAcousticness = (averageAcousticness * 2).toFixed(1);
+                averageEnergy = (averageEnergy * 2).toFixed(0);
+                averageValence = (averageValence * 2).toFixed(0);
+                averageDanceability = (averageDanceability * 2).toFixed(0);
+                averageAcousticness = (averageAcousticness * 2).toFixed(0);
                 averageTempo = Math.round(averageTempo / 50)
 
                 const audioFeatures = {
-                    "Acousticness": averageAcousticness,
-                    "Valence": averageValence,
                     "Energy": averageEnergy,
+                    "Valence": averageValence,
                     "Danceability": averageDanceability,
+                    "Acousticness": averageAcousticness,
                     "Tempo": averageTempo
                 }
 
@@ -438,6 +438,7 @@ function App() {
                         currentTrack={currentTrack}
                         getTrackInfo={getTrackInfo}
                         averageAudioFeatures={averageAudioFeatures}
+                        getAudioFeatures={getAudioFeatures}
                         />} />
 
                     <Route path="/login" element={<LoginPage login={login}/>} />
