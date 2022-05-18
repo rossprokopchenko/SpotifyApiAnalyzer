@@ -122,7 +122,7 @@ function TopGenres(props) {
                             </Box>
                             <Box sx={{display: 'flex', flexDirection: 'column', margin: '10px', height: '250px'}}>
                                     {chartData.map(genre => 
-                                    <div key={genre.value}>
+                                    <div>
                                         <Typography variant='h6' sx={{color: genre.color}}><b>{Math.round((genre.value / totalValue) * 100)}%</b> {genre.title}</Typography>
                                     </div>
                                     
