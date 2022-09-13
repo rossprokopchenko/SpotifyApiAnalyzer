@@ -149,10 +149,11 @@ function App() {
         axios.get('/me/top/tracks', {
             params: {
                 time_range: timeRange,
-                limit: 50
+                limit: 100
             }
         }).then(response => {
             let trackString = '';
+            
             for (let i = 0; i < response.data.items.length; i++) {
                 let track = response.data.items[i];
                 let separator = i === response.data.items.length-1 ? '' : ',';
@@ -424,7 +425,7 @@ function App() {
                         getTrackRecommendations={getTrackRecommendations}
                         availableGenres={availableGenres} 
                         getTrackInfo={getTrackInfo}
-                        />} title="Home | Spotilizer :)" />
+                        />} />
 
                     <Route path="/profile" element={<Profile 
                         profile={profile} 

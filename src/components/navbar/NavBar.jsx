@@ -12,8 +12,8 @@ function NavBar(props) {
             <div className="navbar-left">
                 <Navbar.Brand href="/" to="/">Rosklex</Navbar.Brand>
                 <Nav className="">
-                    <Nav.Link href="home" to="/home">Home</Nav.Link>
-                    <Nav.Link href="profile" to="/profile">Profile</Nav.Link>
+                    { window.localStorage.token ? <Nav.Link href="home" to="/home">Home</Nav.Link> : null }
+                    { window.localStorage.token ? <Nav.Link href="profile" to="/profile">Profile</Nav.Link> : null }
                     {/*<Nav.Link href="help" to="/help">Help</Nav.Link>
                     <Nav.Link href="about" to="/about">About</Nav.Link>*/}
                 </Nav>

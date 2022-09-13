@@ -26,9 +26,8 @@ function AlbumCard(props) {
             '& > :not(style)': {
                 backgroundColor: '#282c40',
                 width: '132px',
-                height: '180px',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                height: '180px', 
+                overflow: 'hidden'
             },
 
             "& > :hover": {
@@ -121,7 +120,7 @@ function AlbumCard(props) {
                         />
                         <Typography
                             variant="body1"
-                            sx={{ fontSize: '13px', fontWeight: 'bold', color: 'lightgray', marginTop: '3px'}}
+                            sx={{ fontSize: '13px', fontWeight: 'bold', color: 'lightgray', p: '3px'}}
                         >
                             {album.name}
                         </Typography>

@@ -316,7 +316,7 @@ export function FilterAccordion(props) {
       >
 
         <Box sx={style}>
-          {availableGenres.map(genre => <Typography color='lightgray'>• {genre}</Typography>)}
+          {availableGenres.map((genre, i) => <Typography key={i} color='lightgray'>• {genre}</Typography>)}
         </Box>
 
       </Modal>

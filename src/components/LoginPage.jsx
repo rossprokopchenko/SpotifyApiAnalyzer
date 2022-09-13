@@ -1,4 +1,4 @@
-import { Button, Typography, Box } from '@mui/material';
+import { Button, Typography, Box, Link } from '@mui/material';
 import React from 'react';
 import {ReactComponent as SpotifyLogo} from '../resources/spotify-logo.svg';
 import './LoginPage.css';

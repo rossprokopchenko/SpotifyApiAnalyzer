@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, List, ListItem, ListItemButton, ListItemText, Divider, Typography, Paper } from '@mui/material';
+import { Box, List, ListItem, ListItemButton, ListItemText, Divider, Typography, Paper, Skeleton } from '@mui/material';
 import './AlbumShop.css';
 import AlbumCard from '../AlbumCard';
 import TrackCard from '../TrackCard';
@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { FilterAccordion } from './FilterAccordion';
 
 function AlbumShop(props) {
-    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getAlbumRecommendations, getTrackRecommendations, availableGenres, getTrackInfo } = props;
+    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getAlbumRecommendations, getTrackRecommendations, availableGenres, getTrackInfo, getNewReleases } = props;
 
     const [albumsDisplay, setAlbumsDisplay] = useState([]);
     const [using, setUsing] = useState();
@@ -21,7 +21,7 @@ function AlbumShop(props) {
         tempo: false,
         popularity: false,
         duration: false
-      }
+    }
 
     // this will execute on component update
     useEffect(() => {
@@ -32,15 +32,16 @@ function AlbumShop(props) {
         if(recommendedAlbums && using === 'recommended') {
             setAlbumsDisplay(recommendedAlbums)
         }
-    }, [savedAlbums, recommendedAlbums]);
+
+    }, [savedAlbums, recommendedAlbums, recommendedTracks]);
 
     const handleTracks = () => {
         if(selectedIndex === 0) return;
-
         setUsing('tracks');
         setAlbumsDisplay({ ...[] });
         setSelectedIndex(0);
         getTrackRecommendations("hip-hop", [0,1], [0,1], [0,1], [0,1], [0,250], [0,100], [0,900000], 20, defaultSortCheckboxes);
+        
     }
 
     const handleSaved = () => {
@@ -69,7 +70,17 @@ function AlbumShop(props) {
         }, 20);
         return () => clearTimeout(timer);
     }
-
+    
+    function resetScrollPos(selector) {
+        var divs = document.querySelectorAll(selector);
+        for (var p = 0; p < divs.length; p++) {
+          if (Boolean(divs[p].style.transform)) { //for IE(10) and firefox
+            divs[p].style.transform = 'translate3d(0px, 0px, 0px)';
+          } else { //for chrome and safari
+            divs[p].style['-webkit-transform'] = 'translate3d(0px, 0px, 0px)';
+          }
+        }
+      }
 
     return (
         <Box sx={{position: 'relative',
@@ -123,18 +134,25 @@ function AlbumShop(props) {
                     width: '100%',
                     height: '100%',
                     flexDirection: 'column',
-                    overflowY: 'scroll'}}>
+                    overflowY: 'scroll',
+                    scrollBehavior: 'smooth'}}>
                     {using === 'tracks' ?
-                        <Box sx={{ml: '5px', mr: '5px'}}>
-                            <FilterAccordion getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres}/> 
+                        <Box sx={{ml: '10px', mr: '10px'}}>
+                            <FilterAccordion getTrackRecommendations={getTrackRecommendations} availableGenres={availableGenres} /> 
                     
-                            {recommendedTracks ? recommendedTracks.map(track => <TrackCard key={track.id} track={track} getTrackInfo={getTrackInfo} />) : ""}
+                            {recommendedTracks.length > 0 ? recommendedTracks.map(track => <TrackCard key={track.id} track={track} getTrackInfo={getTrackInfo} />) 
+                            : [...Array(20)].map((x, i) =>
+                                <Skeleton key={i} variant="rectangular" height={50} sx={{mb: '5px', borderRadius: '5px'}} />
+                            )}
                         </Box>
                     : <Box sx={{display: 'inline-flex',
                         flexDirection: 'row',
                         flexWrap: 'wrap',
                         alignContent: 'flex-start'}}>
-                            {albumsDisplay.length > 0 ? albumsDisplay.map(album => <AlbumCard key={album.id} album={album} savedAlbumsIds={savedAlbumsIds} using={using}/>) : ""}
+                            {albumsDisplay.length > 0 ? albumsDisplay.map(album => <AlbumCard key={album.id} album={album} savedAlbumsIds={savedAlbumsIds} using={using}/>) 
+                            : [...Array(24)].map((x, i) =>
+                                <Skeleton key={i} variant="rectangular" width={132} height={180} sx={{mb: '5px', mt: '5px', ml: '8px', mr: '8px', borderRadius: '5px'}} />
+                            )}
                         </Box>}
                 </Box>
             </Box>
@@ -145,3 +163,11 @@ function AlbumShop(props) {
 }
 
 export default AlbumShop;
+
+/*
+{albumsDisplay.length > 0 ? albumsDisplay.map(album => <AlbumCard key={album.id} album={album} savedAlbumsIds={savedAlbumsIds} using={using}/>) : ""}
+
+{[...Array(16)].map((x, i) =>
+                                <Skeleton variant="rectangular" width={132} height={180} sx={{mb: '10px', mr: '15px', borderRadius: '5px'}} />
+                              )}
+*/

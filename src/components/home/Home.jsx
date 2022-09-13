@@ -5,7 +5,7 @@ import './Home.css';
 import Box from '@mui/material/Box';
 
 function Home(props) {
-    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getAlbumRecommendations, getTrackRecommendations, availableGenres, getTrackInfo } = props;
+    const { savedAlbums, savedAlbumsIds, recommendedAlbums, recommendedTracks, getAlbumRecommendations, getTrackRecommendations, availableGenres, getTrackInfo, getNewReleases } = props;
 
     document.title = 'Home | Spotilyzer :)';
 
@@ -23,6 +23,7 @@ function Home(props) {
                 getTrackRecommendations={getTrackRecommendations} 
                 availableGenres={availableGenres} 
                 getTrackInfo={getTrackInfo} 
+                getNewReleases={getNewReleases}
             />
         </Box>
     );

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Typography, Box, Paper, Slider } from '@mui/material';
+import { Typography, Box, Paper, Slider, Link, Tooltip } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
@@ -41,7 +42,7 @@ function AudioFeatures(props) {
             title: {
                 display: true,
                 color: 'lightgray',
-                text: 'Average Top Track Audio Features',
+                text: 'Your Average Top Track Audio Features',
                 font: {
                     size: 15,
                     weight: 'normal'
@@ -142,12 +143,17 @@ function AudioFeatures(props) {
                  
                 <Paper elevation={3} sx={{p: '15px', color: 'white'}}>
                     <Bar
-                        style={{border: '2px solid black'}}
+                        style={{border: '2px solid black', borderRadius: '3px'}}
                         data={data}
                         options={options}
                     />
                     <Box sx={{display: 'flex', flexDirection: 'row'}}>
-                        <Typography variant='subtitle' sx={{pt: '10px' }}>Average Tempo: {tempo} BPM</Typography>
+                        <Link href="https://medium.com/@boplantinga/what-do-spotifys-audio-features-tell-us-about-this-year-s-eurovision-song-contest-66ad188e112a#:~:text=Values%20typical%20range%20between%20-60,to%201.0%20the%20attribute%20value." target="_blank">
+                            <Tooltip title="Features Description">
+                                <HelpIcon color='info' sx={{mt: '10px', float: 'left'}}/>
+                            </Tooltip>
+                        </Link>
+                        <Typography variant='subtitle' sx={{mt: '10px', ml: '5px' }}>Average Tempo: {tempo} BPM</Typography>
                         <Slider
                             aria-label="Term"
                             defaultValue={1}

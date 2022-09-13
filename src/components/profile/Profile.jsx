@@ -17,7 +17,7 @@ function Profile(props) {
     return (
         <div className="Profile">
             <div className="Profile-content">
-                <Typography variant="h4" sx={{ textAlign: "center", fontFamily: 'Calibri', fontWeight: 'bold'}}>Profile info for {profile.display_name}</Typography>
+                <Typography variant="h4" sx={{ textAlign: "center" }}>Profile info for {profile.display_name}</Typography>
                 
             </div>
             <div className="Profile-content-2" style={{

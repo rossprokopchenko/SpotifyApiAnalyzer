@@ -7,15 +7,14 @@ import { Typography, Box, IconButton } from '@mui/material';
 function Footer(props) {
 
     return (
-        <Box sx={{padding: '20px 60px',
+        <Box sx={{padding: '30px 60px',
             background: 'black',
             width: '100%',
             textAlign: 'center'}}>
             <Typography variant='h3' sx={{color: 'white'}}>Spotilyzer</Typography>
             <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-                <Box sx={{flexDirection: 'column'}}>
-                </Box>
-                <Box sx={{marginLeft: '30px', flexDirection: 'column'}}>
+                <Box sx={{flexDirection: 'column', mt: '10px'}}>
+                    <Typography variant='overline'>all data fetched from <a href="https://developer.spotify.com/documentation/web-api/reference/#/" target="_blank">Spotify Web API</a></Typography>
                 </Box>
             </Box>
             <hr></hr>
